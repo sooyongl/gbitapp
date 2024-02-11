@@ -1,0 +1,188 @@
+---
+title: "test empirical data"
+format: 
+  html:
+    page-layout: full
+    grid:
+      sidebar-width: 0px
+      body-width: 1600px
+      margin-width: 0px
+---
+
+```{r echo = F, include = F}
+knitr::opts_chunk$set(warning = FALSE)
+library(fs)
+library(glue)
+library(tidyverse)
+library(data.table)
+library(MplusAutomation)
+library(lavaan)
+library(clavaan)
+select <- dplyr::select
+searchCB <- function(target) {
+  cat(codebook1[str_detect(codebook1, target)][1])
+}
+
+# grid:
+#       sidebar-width: 300px
+#       body-width: 900px
+#       margin-width: 300px
+#       gutter-width: 1.5rem
+# -------------------------------------------------------------------------
+codebook <- readLines("data/default.cdb")
+codebook0 <- paste(codebook, collapse = "\n")
+codebook1 <- str_split(codebook0, "--------------------------------------------------------------------------------", simplify = T)
+# cat(codebook1[1,1])
+
+# -------------------------------------------------------------------------
+
+varnames <- codebook[str_detect(codebook, "Survey Year")]
+
+# Regular expression for strings within square brackets
+bracket_pattern <- "\\[([^]]+)\\]"
+
+# Regular expression for the year
+year_pattern <- "(?<=Survey Year: )\\d{4}"
+
+# Extracting strings within square brackets
+bracket_contents <- str_extract_all(varnames, bracket_pattern, simplify = TRUE)
+bracket_contents <- str_remove_all(bracket_contents, "\\[|\\]")
+# Extracting the year
+years <- str_extract(varnames, year_pattern)
+varnames <- paste0(bracket_contents,"_", years)
+
+empdata <- read_csv("data/default.csv")
+names(empdata) <-  varnames
+
+names(empdata)[1] <- "PUBID"
+
+exdata0 <- empdata %>% 
+  select(matches("YSAQ-513"), matches("YSAQ-514"),  matches("SEX"))
+
+exdata1 <- exdata0 %>% 
+  mutate_all(~ if_else(.x < 0, NA, .x)) %>%
+  # mutate_at(
+  #   vars(matches("YSAQ")),
+  #   ~ if_else(.x < 0, NA, .x/10)) %>%
+  set_names(c("y1","y2","y3","y4","x1","x2","x3","x4","gen"))
+
+# a2 <- exdata1 %>%
+#   filter_all(~ !is.na(.x))
+
+```
+
+## NLSY97
+
+NLSY97 respondents in select years shared their beliefs about events that might occur in their future. In addition, responding parents in round 1 provided corresponding expectations about the youth respondent's future, so researchers may be able to compare parent and child perceptions for that round. [Description of variables](https://www.nlsinfo.org/content/cohorts/nlsy97/topical-guide/attitudes/expectations)
+
+Specifically, "**Arrested (whether rightly or wrongly)**" exceptions has the following distribution.
+
+Also, other expectations show some skewed distribution as well (like for "Dead from any cause (e.g., crime, illness, accident)" expectation, it is very positively skewed)
+
+::: {.grid}
+
+::: {.g-col-3}
+- 1997
+```{r echo = F}
+hist(exdata1$y1)
+```
+:::
+::: {.g-col-3}
+- 1998
+```{r echo = F}
+hist(exdata1$y2)
+```
+:::
+::: {.g-col-3}
+- 1999
+```{r echo = F}
+hist(exdata1$y3)
+```
+:::
+::: {.g-col-3}
+- 2000
+```{r echo = F}
+hist(exdata1$y4)
+```
+:::
+:::
+
+
+## Unconditional LGM
+
+```{r}
+model = "
+yI =~ 1*y1 + 1*y2 + 1*y3 + 1*y4
+yS =~ 0*y1 + 1*y2 + 2*y3 + 3*y4
+
+"
+```
+
+
+::: {.grid}
+
+::: {.g-col-6}
+- LGM with typical MLE
+```{r}
+fit <- lavaan::growth(model = model, exdata1)
+
+#
+#
+summary(fit, fit.measures = T, standardized = T)
+```
+:::
+
+::: {.g-col-6}
+- LGM with GBIT
+```{r}
+cfit <- clavaan::cgrowth(model = model, exdata1, bounds = 
+                list(c(0, 100), c(0, 100),c(0, 100),c(0, 100),
+                     c(0,100),c(0,100),c(0,100),c(0,100),
+                     c(-Inf,Inf)))
+summary(cfit, fit.measures = T, standardized = T)
+```
+:::
+
+:::
+
+
+## Conditional LGM
+
+```{r}
+model = "
+yI =~ 1*y1 + 1*y2 + 1*y3 + 1*y4
+yS =~ 0*y1 + 1*y2 + 2*y3 + 3*y4
+
+yI ~ gen;
+yS ~ gen;
+gen ~ 1;
+"
+```
+
+
+::: {.grid}
+
+::: {.g-col-6}
+- LGM with typical MLE
+```{r}
+fit <- lavaan::growth(model = model, exdata1)
+
+
+
+summary(fit, fit.measures = T, standardized = T)
+```
+:::
+
+::: {.g-col-6}
+- LGM with GBIT
+```{r}
+cfit <- clavaan::cgrowth(model = model, exdata1, bounds = 
+                list(c(0, 100), c(0, 100),c(0, 100),c(0, 100),
+                     c(0,100),c(0,100),c(0,100),c(0,100),
+                     c(-Inf,Inf)))
+summary(cfit, fit.measures = T, standardized = T)
+```
+:::
+
+:::
+
