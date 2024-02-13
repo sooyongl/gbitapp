@@ -43,12 +43,13 @@ searchCB("YSAQ")
 a1 <- empdata %>% 
   select(matches("YSAQ"))
 
-hist(a1[5])
+# hist(a1[5])
 
 library(clavaan)
 
 a1 <- empdata %>% 
   select(matches("YSAQ-513_1997|YSAQ-514_1997|YSAQ-516_1997"))
+
 
 
 a2 <- a1 %>% 
@@ -75,11 +76,15 @@ a1 <- empdata %>%
   select(matches("YSAQ-513"), matches("YSAQ-514"),  matches("SEX"))
 
 a2 <- a1 %>% 
-  # mutate_all(~ if_else(.x < 0, NA, .x/10)) %>% 
-  mutate_at(
-    vars(matches("YSAQ")),
-    ~ if_else(.x < 0, NA, .x/10)) %>%
-  set_names(c("y1","y2","y3","y4","x1","x2","x3","x4","gen"))
+  mutate_all(~ if_else(.x < 0, NA, .x)) %>%
+  # mutate_at(
+  #   vars(matches("YSAQ")),
+  #   ~ if_else(.x < 0, NA, .x/10)) %>%
+  set_names(c("y1","y2","y3","y4","x1","x2","x3","x4","gen")) %>% 
+  mutate(gen = gen - 1)
+
+
+data.table::fwrite(a2, "cleaneddata/cleaned.csv")
 
 a2 <- a2 %>%
   filter_all(~ !is.na(.x))
