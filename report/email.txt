@@ -1,0 +1,27 @@
+Hi Tiffany!
+
+I hope this email finds you well. I've been looking for empirical doubly-censored data (because without it, it is challenging to support the benefit of GBIT...).
+
+Fortunately, I found 'expectation' measures in NLSY97. NLSY97 measures youth's expectations to some evetns (like being accused, being married, dying,...) with the percentage scales (0 ~ 100). It says 50 might play a role in uncentianty (if you are interested in this scale, I attached this scale).
+
+There are many expectations, among them, the expectation of being accused showed (perfectly!) doubly-censored patterns, and it was measured by 4 time points! (Also, other expectations also took some censored patterns, ceiling or floor, so I can apply GBIT to all other measures as well when they come into play in the same model).
+
+Long story short. My question is 
+
+Do you think it is valid to use those measures as an empirical illustration in the simulation study?
+
+I'm afraid that it is percenttile scales, so someone would say it needs other methods than something relying on normal distribution assumption (like ML). (but, there are studies usiing those scales without considering their censoring effects in like regression).
+
+I just want your thoughts on that.
+
+
+"What is the percent chance that you would be arrested if you stole a car?"
+
+Best,
+
+
+
+
+
+
+

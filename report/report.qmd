@@ -29,7 +29,7 @@ searchCB <- function(target) {
 #       margin-width: 300px
 #       gutter-width: 1.5rem
 # -------------------------------------------------------------------------
-codebook <- readLines("data/default.cdb")
+codebook <- readLines("../data/default.cdb")
 codebook0 <- paste(codebook, collapse = "\n")
 codebook1 <- str_split(codebook0, "--------------------------------------------------------------------------------", simplify = T)
 # cat(codebook1[1,1])
@@ -51,7 +51,7 @@ bracket_contents <- str_remove_all(bracket_contents, "\\[|\\]")
 years <- str_extract(varnames, year_pattern)
 varnames <- paste0(bracket_contents,"_", years)
 
-empdata <- read_csv("data/default.csv")
+empdata <- read_csv("../data/default.csv")
 names(empdata) <-  varnames
 
 names(empdata)[1] <- "PUBID"
@@ -75,9 +75,14 @@ exdata1 <- exdata0 %>%
 
 NLSY97 respondents in select years shared their beliefs about events that might occur in their future. In addition, responding parents in round 1 provided corresponding expectations about the youth respondent's future, so researchers may be able to compare parent and child perceptions for that round. [Description of variables](https://www.nlsinfo.org/content/cohorts/nlsy97/topical-guide/attitudes/expectations)
 
-Specifically, "**Arrested (whether rightly or wrongly)**" exceptions has the following distribution.
+Specifically, "**Arrested (whether rightly or wrongly)**" exceptions has the following distribution. (The question is "What is the percent chance that you would be arrested if you stole a car?")
 
 Also, other expectations show some skewed distribution as well (like for "Dead from any cause (e.g., crime, illness, accident)" expectation, it is very positively skewed)
+
+```{r}
+psych::describe(exdata1[1:4]) %>% select(mean, sd, median, min, max, skew, kurtosis)
+```
+
 
 ::: {.grid}
 
