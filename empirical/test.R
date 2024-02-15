@@ -13,11 +13,11 @@ codebook <- readLines("data/default.cdb")
 codebook0 <- paste(codebook, collapse = "\n")
 codebook1 <- str_split(codebook0, "--------------------------------------------------------------------------------", simplify = T)
 # cat(codebook1[1,1])
-
+cat(codebook1[str_detect(codebook1, "YINC")])
 # -------------------------------------------------------------------------
 
 varnames <- codebook[str_detect(codebook, "Survey Year")]
-
+varnames
 # Regular expression for strings within square brackets
 bracket_pattern <- "\\[([^]]+)\\]"
 
