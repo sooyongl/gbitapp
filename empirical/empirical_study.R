@@ -11,16 +11,14 @@ select <- dplyr::select
 searchCB <- function(target) {
   cat(codebook1[str_detect(codebook1, target)][1])
 }
+source("empirical/table_source.R")
+
 
 empdata <- data.table::fread("cleaneddata/empirical_data.csv")
 
-sum(is.na(empdata$income))
-sum(is.na(empdata$gen))
-sum(is.na(empdata$race))
-
-
 a2 <- empdata %>%
-  filter_all(~ !is.na(.x)) #%>%
+  filter_all(~ !is.na(.x)) %>%
+  mutate(income = income * 5)
   # mutate_at()
   # mutate_at(
   #   vars(matches("^y")),
@@ -29,9 +27,6 @@ a2 <- empdata %>%
   # mutate_at(
   #   vars(matches("^y")),
   #   ~ if_else(.x < 0, NA, .x/10))
-
-min(a2$income)
-hist(a2$income)
 
 cenp <- 100
 # unconditional ---------------------------------------------------
@@ -104,11 +99,11 @@ yS =~ 0*y1 + 1*y2 + 2*y3 + 3*y4
 yI ~ gen + race
 yS ~ gen + race
 
-# income ~ gen + race + yI + yS
+income ~ gen + race + yI + yS
 
 gen ~ 1
 race ~ 1
-# income ~ 1
+income ~ 1
 "
 
 cfit <- 
@@ -137,7 +132,7 @@ condres <- parameterestimates(cfit) %>%
 # cond results
 res_cond <- condres %>% 
   filter(
-    str_detect(lhs, "income|yS|yI")
+    str_detect(lhs, "dep|income|yS|yI")
   ) %>% 
   filter(
     !str_detect(op, "=~")

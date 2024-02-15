@@ -1,0 +1,289 @@
+R00001.00    [PUBID]                                        Survey Year: 1997
+  PRIMARY VARIABLE
+
+ 
+             PUBID, YOUTH CASE IDENTIFICATION CODE
+ 
+COMMENT: YOUTH CASE IDENTIFICATION CODE
+ 
+       0           0
+     998           1 TO 999
+     999        1000 TO 1999
+     997        2000 TO 2999
+     996        3000 TO 3999
+     998        4000 TO 4999
+     996        5000 TO 5999
+     994        6000 TO 6999
+     994        7000 TO 7999
+     989        8000 TO 8999
+      23        9000 TO 9999
+  -------
+    8984
+ 
+Refusal(-1)            0
+Don't Know(-2)         0
+TOTAL =========>    8984   VALID SKIP(-4)       0     NON-INTERVIEW(-5)       0
+ 
+Min:              1        Max:           9022        Mean:              4504.3
+ 
+Lead In: R72976.00[Default]
+Default Next Question: R05363.00
+--------------------------------------------------------------------------------
+S09208.00    [YSAQ-282C]                                    Survey Year: 2002
+  PRIMARY VARIABLE
+
+ 
+             HOW OFTEN R HAS BEEN A NERVOUS PERSON IN PAST MONTH
+ 
+How much of the time during the last month have you been a very nervous person?
+ 
+UNIVERSE: All
+ 
+     283       1 All of the time
+     838       2 Most of the time
+    4634       3 Some of the time
+    2117       4 None of the time
+  -------
+    7872
+ 
+Refusal(-1)           21
+Don't Know(-2)         3
+TOTAL =========>    7896   VALID SKIP(-4)       0     NON-INTERVIEW(-5)    1088
+ 
+Min:              1        Max:              4        Mean:                3.09
+ 
+Lead In: S09199.00[Default] S09207.00[Default]
+Default Next Question: S09209.00
+--------------------------------------------------------------------------------
+S09209.00    [YSAQ-282D]                                    Survey Year: 2002
+  PRIMARY VARIABLE
+
+ 
+             HOW OFTEN R FELT CALM AND PEACEFUL IN PAST MONTH
+ 
+How much of the time during the last month have you felt calm and peaceful?
+ 
+UNIVERSE: All
+ 
+     668       1 All of the time
+    3717       2 Most of the time
+    3099       3 Some of the time
+     387       4 None of the time
+  -------
+    7871
+ 
+Refusal(-1)           20
+Don't Know(-2)         5
+TOTAL =========>    7896   VALID SKIP(-4)       0     NON-INTERVIEW(-5)    1088
+ 
+Min:              1        Max:              4        Mean:                2.41
+ 
+Lead In: S09208.00[Default]
+Default Next Question: S09210.00
+--------------------------------------------------------------------------------
+S09210.00    [YSAQ-282E]                                    Survey Year: 2002
+  PRIMARY VARIABLE
+
+ 
+             HOW OFTEN R FELT DOWN OR BLUE IN PAST MONTH
+ 
+How much of the time during the last month have you felt downhearted and blue?
+ 
+UNIVERSE: All
+ 
+     251       1 All of the time
+     829       2 Most of the time
+    4531       3 Some of the time
+    2255       4 None of the time
+  -------
+    7866
+ 
+Refusal(-1)           25
+Don't Know(-2)         5
+TOTAL =========>    7896   VALID SKIP(-4)       0     NON-INTERVIEW(-5)    1088
+ 
+Min:              1        Max:              4        Mean:                3.12
+ 
+Lead In: S09209.00[Default]
+Default Next Question: S09211.00
+--------------------------------------------------------------------------------
+S09211.00    [YSAQ-282F]                                    Survey Year: 2002
+  PRIMARY VARIABLE
+
+ 
+             HOW OFTEN R HAS BEEN A HAPPY PERSON IN PAST MONTH
+ 
+How much of the time during the last month have you been a happy person?
+ 
+UNIVERSE: All
+ 
+    1036       1 All of the time
+    4256       2 Most of the time
+    2400       3 Some of the time
+     180       4 None of the time
+  -------
+    7872
+ 
+Refusal(-1)           20
+Don't Know(-2)         4
+TOTAL =========>    7896   VALID SKIP(-4)       0     NON-INTERVIEW(-5)    1088
+ 
+Min:              1        Max:              4        Mean:                2.22
+ 
+Lead In: S09210.00[Default]
+Default Next Question: S09212.00
+--------------------------------------------------------------------------------
+S09212.00    [YSAQ-282G]                                    Survey Year: 2002
+  PRIMARY VARIABLE
+
+ 
+             HOW OFTEN R DEPRESSED IN LAST MONTH
+ 
+How much of the time during the last month have you felt so down in the dumps 
+that nothing could cheer you up?
+ 
+UNIVERSE: All
+ 
+     129       1 All of the time
+     409       2 Most of the time
+    2328       3 Some of the time
+    5005       4 None of the time
+  -------
+    7871
+ 
+Refusal(-1)           22
+Don't Know(-2)         3
+TOTAL =========>    7896   VALID SKIP(-4)       0     NON-INTERVIEW(-5)    1088
+ 
+Min:              1        Max:              4        Mean:                3.55
+ 
+Lead In: S09211.00[Default]
+Default Next Question: S09213.00
+--------------------------------------------------------------------------------
+T10691.00    [YTEL-52~000001]                               Survey Year: 2007
+  PRIMARY VARIABLE
+
+ 
+             PERSONAL RESPONSIBILITY QUESTIONS - PEOPLE SHOULD HELP LESS 
+             FORTUNATE
+ 
+Please tell me whether you strongly agree, agree, neither agree nor disagree, 
+disagree, or strongly disagree with the following statements:
+ 
+UNIVERSE: R is in sample group 4
+ 
+RESPONSE CHOICE: "People should be willing to help others who are less 
+                      fortunate."
+ 
+     814       4 Strongly Agree
+     940       3 Agree
+      65       2 Neither Agree nor Disagree
+      17       1 Disagree
+       4       0 Strongly Disagree
+  -------
+    1840
+ 
+Refusal(-1)            1
+Don't Know(-2)         7
+TOTAL =========>    1848   VALID SKIP(-4)    5570     NON-INTERVIEW(-5)    1566
+ 
+Min:              0        Max:              4        Mean:                3.38
+ 
+Lead In: T10690.04[Default]
+Default Next Question: T10691.01
+--------------------------------------------------------------------------------
+T10691.01    [YTEL-52~000002]                               Survey Year: 2007
+  PRIMARY VARIABLE
+
+ 
+             PERSONAL RESPONSIBILITY QUESTIONS - PEOPLE SHOULD TAKE CARE OF 
+             THEMSELVES
+ 
+Please tell me whether you strongly agree, agree, neither agree nor disagree, 
+disagree, or strongly disagree with the following statements:
+ 
+UNIVERSE: R is in sample group 4
+ 
+RESPONSE CHOICE: "Those in need have to learn to take care of themselves and not
+                      depend on others."
+ 
+     281       4 Strongly Agree
+     860       3 Agree
+     308       2 Neither Agree nor Disagree
+     323       1 Disagree
+      57       0 Strongly Disagree
+  -------
+    1829
+ 
+Refusal(-1)            3
+Don't Know(-2)        16
+TOTAL =========>    1848   VALID SKIP(-4)    5570     NON-INTERVIEW(-5)    1566
+ 
+Min:              0        Max:              4        Mean:                2.54
+ 
+Lead In: T10691.00[Default]
+Default Next Question: T10691.02
+--------------------------------------------------------------------------------
+T10691.02    [YTEL-52~000003]                               Survey Year: 2007
+  PRIMARY VARIABLE
+
+ 
+             PERSONAL RESPONSIBILITY QUESTIONS - HELPING PEOPLE IS IMPORTANT TO 
+             R
+ 
+Please tell me whether you strongly agree, agree, neither agree nor disagree, 
+disagree, or strongly disagree with the following statements:
+ 
+UNIVERSE: R is in sample group 4
+ 
+RESPONSE CHOICE: "Personally assisting people in trouble is very important to 
+                      me."
+ 
+     414       4 Strongly Agree
+    1045       3 Agree
+     256       2 Neither Agree nor Disagree
+     103       1 Disagree
+      18       0 Strongly Disagree
+  -------
+    1836
+ 
+Refusal(-1)            1
+Don't Know(-2)        11
+TOTAL =========>    1848   VALID SKIP(-4)    5570     NON-INTERVIEW(-5)    1566
+ 
+Min:              0        Max:              4        Mean:                2.94
+ 
+Lead In: T10691.01[Default]
+Default Next Question: T10691.03
+--------------------------------------------------------------------------------
+T10691.03    [YTEL-52~000004]                               Survey Year: 2007
+  PRIMARY VARIABLE
+
+ 
+             PERSONAL RESPONSIBILITY QUESTIONS -  PEOPLE NEED TO LOOK AFTER 
+             THEMSELVES
+ 
+Please tell me whether you strongly agree, agree, neither agree nor disagree, 
+disagree, or strongly disagree with the following statements:
+ 
+UNIVERSE: R is in sample group 4
+ 
+RESPONSE CHOICE: "These days people need to look after themselves and not overly
+                      worry about others."
+ 
+     145       4 Strongly Agree
+     619       3 Agree
+     290       2 Neither Agree nor Disagree
+     593       1 Disagree
+     174       0 Strongly Disagree
+  -------
+    1821
+ 
+Refusal(-1)            6
+Don't Know(-2)        21
+TOTAL =========>    1848   VALID SKIP(-4)    5570     NON-INTERVIEW(-5)    1566
+ 
+Min:              0        Max:              4        Mean:                1.98
+ 
+Lead In: T10691.02[Default]
+Default Next Question: T10692.00
