@@ -8,7 +8,7 @@ library(moments)
 source("empirical/table_source.R")
 select <- dplyr::select
 
-data <- fread("cleaneddata/empirical_data.csv") %>% tibble() #%>% 
+data <- fread("cleaneddata/empirical_rawdata.csv") %>% tibble() #%>% 
   # mutate(income = exp(income))
 
 data <- data %>%
@@ -26,17 +26,17 @@ prop_floor <- apply(data[1:4], 2, function(x) {
 })
 
 psych::describe(data) %>% 
-  slice(1:4) %>% 
+  # slice(1:4) %>% 
   select(mean, sd, skew, kurtosis) %>% 
   mutate(
-    ceiling = prop_ceiling,
-    floor = prop_floor
+    ceiling = c(prop_ceiling, NA, NA,NA),
+    floor = c(prop_floor, NA, NA,NA)
   ) %>% 
   mutate_all(round, 3) %>% 
-  mutate(vars = c("y1","y2","y3","y4"),
+  mutate(vars = c("y1","y2","y3","y4", "Gender","Race","Income"),
          .before = mean, 
          ) %>% 
-  mk_tbl("Table. Desci")
+  mk_tbl("")
 
 
 long_data <- data %>% 

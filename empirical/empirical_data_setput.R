@@ -98,6 +98,7 @@ a1 <- empdata %>%
          matches("YINC-1700_2015"),  
          matches("YINC-1700_2017"),  
          matches("YINC-1700_2019"),  
+         matches("YINC-1700_2021"),  
          matches("SEX"),
          matches("ETHNI"))
 
@@ -118,7 +119,18 @@ a2 <- a1 %>%
          race = case_when(
            race == 4 ~ 0, 
            TRUE ~ 1 # Black / Hispanic
-         )) %>% 
+         ))
+
+a2 %>%
+  mutate(
+    income = rowMeans(across(matches("^x")), na.rm = T)
+  ) %>% select(-matches("^x")) %>% 
+  mutate(income = if_else(is.nan(income), NA, income)) %>%
+  filter_at(vars(matches("^y")), ~ !is.na(.x)) %>% 
+  data.table::fwrite(., "cleaneddata/empirical_rawdata.csv")
+
+
+a2 <- a2 %>% 
   mutate_at(vars(matches("^x")), ~ if_else(.x == 0, 1, .x)) %>% 
   mutate_at(vars(matches("^x")), ~ log(.x))
 
