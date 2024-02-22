@@ -155,6 +155,7 @@ table.phase2 <- function(ft_data, caption="", x.width = 1) {
     bolding(4, temp_dt, mser_pos) %>% 
     bolding(5, temp_dt, mser_pos) %>% 
     
+    # colformat_double(digits = 4) %>% 
     fix_border_issues()
   
   

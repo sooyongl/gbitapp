@@ -43,8 +43,8 @@ bias_dt <- est_data %>%
     mse_gbit = mean(error_gbit^2, na.rm = T)
   ) %>% 
   ungroup() %>% 
-  mutate(mse_ratio = mse_gbit / mse_cen) %>% 
-  mutate_if(is.numeric, ~ round(.x, 3))
+  mutate(mse_ratio = mse_gbit / mse_cen)# %>% 
+  # mutate_if(is.numeric, ~ round(.x, 3))
 
 # -------------------------------------------------------------------------
 filter.inp = "I~1"
@@ -62,20 +62,21 @@ pick_res <- function(filter.inp) {
     filter(path == filter.inp) %>% 
     # filter(nosb)
     filter(ntimepoint != "9") %>%
-    # filter(ICC == "0.5") %>% 
+    # filter(ICC == "0.5") %>%
     select(nobs, ntimepoint, cenprop_chr, ICC, path,
            starts_with("rbias"), starts_with("mse")) %>% 
     
     select(nobs, ntimepoint, cenprop_chr, ICC,
            starts_with("rbias"), starts_with("mse")) %>% 
-    # group_by(nobs, cenprop_chr) %>% 
-    # summarise(
-    #   rbias_cen = mean(rbias_cen),
-    #   rbias_gbit = mean(rbias_gbit), 
-    #   mse_cen = mean(mse_cen),
-    #   mse_gbit = mean(mse_gbit), 
-    #   mse_ratio  = mean(mse_ratio)
-    # ) %>% 
+    group_by(nobs, cenprop_chr) %>%
+    summarise(
+      rbias_cen = mean(rbias_cen),
+      rbias_gbit = mean(rbias_gbit),
+      mse_cen = mean(mse_cen),
+      mse_gbit = mean(mse_gbit),
+      mse_ratio  = mean(mse_ratio)
+    ) %>%
+    
     pivot_wider(names_from = "cenprop_chr", 
                 values_from = c("rbias_cen", "rbias_gbit", 
                                 "mse_cen", "mse_gbit", "mse_ratio")
@@ -100,7 +101,8 @@ table_uncond <- pick_res("I~1") %>%
     pick_res("S~~S"),
     pick_res("I~~S")
   )
-table_uncond <- table_uncond %>% table.phase2(caption = "Table. Relative bias and MSE ratio between GBIT and MLE for unconditional LGM parameters")
+table_uncond <- table_uncond %>% 
+  table.phase2(caption = "Table. Relative bias and MSE ratio between GBIT and MLE for unconditional LGM parameters")
 
 table_cond <- pick_res("I~x1.cov") %>% 
   bind_rows(
