@@ -61,13 +61,21 @@ pick_res <- function(filter.inp) {
   bias_dt %>% 
     filter(path == filter.inp) %>% 
     # filter(nosb)
-    filter(ntimepoint == "5") %>% 
-    filter(ICC == "0.5") %>% 
+    filter(ntimepoint != "9") %>%
+    # filter(ICC == "0.5") %>% 
     select(nobs, ntimepoint, cenprop_chr, ICC, path,
            starts_with("rbias"), starts_with("mse")) %>% 
     
     select(nobs, ntimepoint, cenprop_chr, ICC,
            starts_with("rbias"), starts_with("mse")) %>% 
+    # group_by(nobs, cenprop_chr) %>% 
+    # summarise(
+    #   rbias_cen = mean(rbias_cen),
+    #   rbias_gbit = mean(rbias_gbit), 
+    #   mse_cen = mean(mse_cen),
+    #   mse_gbit = mean(mse_gbit), 
+    #   mse_ratio  = mean(mse_ratio)
+    # ) %>% 
     pivot_wider(names_from = "cenprop_chr", 
                 values_from = c("rbias_cen", "rbias_gbit", 
                                 "mse_cen", "mse_gbit", "mse_ratio")
@@ -80,7 +88,8 @@ pick_res <- function(filter.inp) {
            matches("0.3-0.7"),
            matches("0.4-0.6")
     ) %>% 
-    mutate(type = filter.inp, .before = nobs)
+    mutate(type = filter.inp, .before = nobs) %>% 
+    ungroup()
 }
 
 
@@ -91,7 +100,7 @@ table_uncond <- pick_res("I~1") %>%
     pick_res("S~~S"),
     pick_res("I~~S")
   )
-table_uncond <- table_uncond %>% table.phase2()
+table_uncond <- table_uncond %>% table.phase2(caption = "Table. Relative bias and MSE ratio between GBIT and MLE for unconditional LGM parameters")
 
 table_cond <- pick_res("I~x1.cov") %>% 
   bind_rows(
@@ -99,15 +108,15 @@ table_cond <- pick_res("I~x1.cov") %>%
     pick_res("z1~I.cov"),
     pick_res("z1~S.cov")
   )
-table_cond <- table_cond %>% table.phase2()
+table_cond <- table_cond %>% table.phase2(caption = "Table. Relative bias and MSE ratio between GBIT and MLE for conditional LGM parameters")
 
 # Tables ------------------------------------------------------
 my.doc <- read_docx()
 
 tables <- ls()[str_detect(ls(), "table_(un|con)")]
 
-table_add(my.doc, eval(as.name(tables[2])), landscape = T)
 table_add(my.doc, eval(as.name(tables[1])), landscape = T)
+table_add(my.doc, eval(as.name(tables[2])), landscape = T)
 
 # for(i in tables[-1]) {
 #   table_add(my.doc, i, landscape = T)

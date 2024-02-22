@@ -140,8 +140,8 @@ table.phase2 <- function(ft_data, caption="", x.width = 1) {
   
     width(j = 3:17, width = 0.5) %>%
     width(j = 1:2, width = 0.5) %>%
-    # set_caption(caption = caption) %>%
-    add_footer_lines(values = "Note. N: sample size; GBIT: generalized tobit estimator; ML: ML estimator with censored data; Number of timepoints equals 5 and ICC equals 0.5") %>%
+    set_caption(caption = caption) %>%
+    add_footer_lines(values = "Note. N: sample size; GBIT: generalized tobit estimator; ML: ML estimator with censored data; Number of timepoints and ICC were averaged") %>%
     
     coloring(1, temp_dt, mser_pos) %>% 
     coloring(2, temp_dt, mser_pos) %>% 
