@@ -1,3 +1,5 @@
+library(flextable)
+library(officer)
 for(source.code in list.files("source",full.names = T)) {source(source.code)}
 source_codes <- ls()
 
@@ -82,24 +84,36 @@ pick_res <- function(filter.inp) {
 }
 
 
-pick_res("I~1") %>% 
+table_uncond <- pick_res("I~1") %>% 
   bind_rows(
     pick_res("S~1"),
     pick_res("I~~I"),
     pick_res("S~~S"),
     pick_res("I~~S")
   )
+table_uncond <- table_uncond %>% table.phase2()
 
-
-pick_res("I~x1.cov") %>% 
+table_cond <- pick_res("I~x1.cov") %>% 
   bind_rows(
     pick_res("S~x1.cov"),
     pick_res("z1~I.cov"),
     pick_res("z1~S.cov")
   )
+table_cond <- table_cond %>% table.phase2()
 
+# Tables ------------------------------------------------------
+my.doc <- read_docx()
 
+tables <- ls()[str_detect(ls(), "table_(un|con)")]
 
+table_add(my.doc, eval(as.name(tables[2])), landscape = T)
+table_add(my.doc, eval(as.name(tables[1])), landscape = T)
+
+# for(i in tables[-1]) {
+#   table_add(my.doc, i, landscape = T)
+# }
+
+print(my.doc, target = "results/phase2_table.docx")
 
 
 
