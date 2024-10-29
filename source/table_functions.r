@@ -26,7 +26,7 @@ table_add <- function(x.doc, x.tb, landscape = F) {
 
 # Phase 2 table -------------------------------------------------
 table.phase2 <- function(ft_data, caption="", x.width = 1) {
-  # ft_data <-bias_dt
+  # ft_data <- table_cond
   # filter.inp = "I~1"
   # x.width = 1
   # caption = "Table 4-2. Intercept"
@@ -36,8 +36,9 @@ table.phase2 <- function(ft_data, caption="", x.width = 1) {
   ft_data <- ft_data %>% 
     mutate_if(is.numeric, round, 3) %>% 
     select(type, nobs,
-           starts_with("rbias"), starts_with("mse")) %>% 
-    select(-matches("mse_cen|mse_gbit")) %>% 
+           starts_with("rbias"), 
+           starts_with("var")) %>% 
+    select(-matches("var_cen|var_gbit")) %>% 
     select(type, nobs,
            # matches("^bias"),
            # matches("^mse_"),
@@ -65,7 +66,7 @@ table.phase2 <- function(ft_data, caption="", x.width = 1) {
   header2[1:2] <- c("")
   header2[3:dim(ft_data)[2]] <- 
     # rep(c(rep(c("Bias","MSE"), each = 2),"MSER"), 5)
-    rep(c(rep(c("rBias"), each = 2),"MSER"), 5)
+    rep(c(rep(c("rBias"), each = 2),"VarD"), 5)
   # length(header2)
   
   # Header 3
@@ -83,13 +84,13 @@ table.phase2 <- function(ft_data, caption="", x.width = 1) {
     header3 = header3,
     stringsAsFactors = FALSE )
   
-  mser_pos <- str_which(names(ft_data), "mse_ratio")
+  mser_pos <- str_which(names(ft_data), "var_diff")
   temp_dt  <- ft_data %>% 
-    select(contains("mse_ratio"))
+    select(contains("var_diff"))
   
   coloring <- function(x, coln, temp_dt, mser_pos) {
     bg(x,
-      i = which(temp_dt[,coln] < 1), 
+      i = which(temp_dt[,coln] <= 0), 
       j = mser_pos[coln], 
       bg = "#DCDCDC",#"#D3D3D3", 
       part = "body")
