@@ -149,6 +149,7 @@ table_add(my.doc, eval(as.name(tables[2])), landscape = T)
 
 print(my.doc, target = "results/phase2_table.docx")
 
+print(my.doc, target = 'G:\\My Drive\\project\\0sub_GBIT_simulation\\revision\\table_and_figure\\phase2_table.docx')
 
 
 
