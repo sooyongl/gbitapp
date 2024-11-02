@@ -23,7 +23,7 @@ data <- data %>% filter(birth_year == 1980)
 data <- data %>% 
   select(
     id,
-    y1=a17, y2=a18, y3=a19, y4=a20, # 1980
+    Age17=a17, Age18=a18, Age19=a19, Age20=a20, # 1980
     # y1=a14, y2=a15, y3=a16, y4=a17, # 1983
     gen, race, income) %>% 
   filter_all(~ !is.na(.x))
@@ -55,14 +55,14 @@ psych::describe(data) %>%
     floor = c(prop_floor, NA, NA,NA)
   ) %>% 
   mutate_all(round, 3) %>% 
-  mutate(vars = c("y1","y2","y3","y4", "Gender","Race","Income"),
+  mutate(vars = c("Age17","Age18","Age19","Age20", "Gender","Race","Income"),
          .before = mean, 
          ) %>% 
   mk_tbl("")
 
 
 long_data <- data %>% 
-  select(y1:y4) %>% 
+  select(Age17:Age20) %>% 
   mutate(id = row_number()) %>% 
   gather("time","value", -id) %>% 
   arrange(id, time)
