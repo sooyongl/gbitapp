@@ -81,6 +81,15 @@ searchCB("YSAQ-513")
 searchCB("YHEA")
 
 
+table(empdata$`KEY!BDATE_Y_1997`)
+
+empdata <- empdata %>% 
+  mutate(
+    birth_year = `KEY!BDATE_Y_1997`,
+    age = 1997 - birth_year
+  )
+
+
 a1 <- empdata %>% 
   select(PUBID,
          matches("YSAQ-513"), 
@@ -100,7 +109,10 @@ a1 <- empdata %>%
          matches("YINC-1700_2019"),  
          matches("YINC-1700_2021"),  
          matches("SEX"),
-         matches("ETHNI"))
+         matches("ETHNI"),
+         matches("birth_year"),
+         matches("age")
+         )
 
 # a1 <- a1 %>% 
 #   left_join(covdata %>% select(PUBID, dep), by = "PUBID")
@@ -108,13 +120,13 @@ a1 <- empdata %>%
 
 a2 <- a1 %>% 
   mutate_all(~ if_else(.x < 0, NA, .x)) %>%
-  select(-PUBID) %>% 
+  # select(-PUBID) %>% 
   # mutate_at(
   #   vars(matches("YSAQ")),
   #   ~ if_else(.x < 0, NA, .x/10)) %>%
-  set_names(c("y1","y2","y3","y4",
+  set_names(c("id","y1","y2","y3","y4",
               paste0("x", 1:sum(str_detect(names(a1), "YINC"))),
-              "gen","race")) %>% 
+              "gen","race","birth_year","age")) %>% 
   mutate(gen = gen - 1,
          race = case_when(
            race == 4 ~ 0, 
@@ -126,7 +138,7 @@ a2 %>%
     income = rowMeans(across(matches("^x")), na.rm = T)
   ) %>% select(-matches("^x")) %>% 
   mutate(income = if_else(is.nan(income), NA, income)) %>%
-  filter_at(vars(matches("^y")), ~ !is.na(.x)) %>% 
+  # filter_at(vars(matches("^y")), ~ !is.na(.x)) %>% 
   data.table::fwrite(., "cleaneddata/empirical_rawdata.csv")
 
 
@@ -156,11 +168,48 @@ if(T) {
     ) %>% pull(income)
 }
 
-a2 <- a2 %>% 
+a3 <- a2 %>% 
   mutate(
     income = income
     # dep = dep
     ) %>% 
-  select(-matches("^x"))
+  select(-matches("^x")) %>% 
+  relocate(income, .after = race)
 
-data.table::fwrite(a2, "cleaneddata/empirical_data.csv")
+data.table::fwrite(a3, "cleaneddata/empirical_data.csv")
+
+
+# Age-wise ----------------------------------------------------------------
+
+a4 <- lapply(1:nrow(a3), function(i) {
+  temp <- a3[i,]
+  names(temp)[2:5] <- paste0("a", temp$age:(temp$age+3))
+  temp
+})
+
+a4 <- bind_rows(a4)
+a4 <- a4 %>% relocate(id, a13, a14, a15, a16, a17, a18, a19, a20)
+
+apply(a4, 2, function(x) sum(is.na(x)))
+
+a4 %>% filter(birth_year == 1984)
+
+a4 %>% filter(birth_year == 1984) %>% 
+  apply(., 2, function(x) sum(is.na(x)))
+
+
+data.table::fwrite(a4, "cleaneddata/empirical_data_agewise.csv")
+
+
+
+
+
+
+
+
+
+
+
+
+
+

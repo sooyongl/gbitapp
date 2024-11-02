@@ -8,11 +8,33 @@ library(moments)
 source("empirical/table_source.R")
 select <- dplyr::select
 
-data <- fread("cleaneddata/empirical_rawdata.csv") %>% tibble() #%>% 
-  # mutate(income = exp(income))
+rawdata <- fread("cleaneddata/empirical_rawdata.csv") %>% tibble() #%>% 
+# mutate(income = exp(income))
 
-data <- data %>%
+data <- data.table::fread("cleaneddata/empirical_data_agewise.csv") %>%
+  tibble() %>% 
+  left_join(
+    rawdata %>% select(id, raw_income = income), by = "id"
+  )
+
+
+data <- data %>% filter(birth_year == 1980)
+
+data <- data %>% 
+  select(
+    id,
+    y1=a17, y2=a18, y3=a19, y4=a20, # 1980
+    # y1=a14, y2=a15, y3=a16, y4=a17, # 1983
+    gen, race, income) %>% 
   filter_all(~ !is.na(.x))
+
+
+data <- data %>% 
+  left_join(
+    rawdata %>% select(id, raw_income = income), by = "id"
+  ) %>% 
+  select(-id, -income) %>% 
+  rename(income = raw_income)
 
 
 prop_ceiling <- apply(data[1:4], 2, function(x) {
