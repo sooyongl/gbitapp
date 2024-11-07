@@ -53,11 +53,19 @@ bias_dt <- est_data %>%
     mse_ratio = mse_gbit / mse_cen,
     var_ratio = var_gbit / var_cen,
     
-    var_diff = var_gbit - var_cen
+    var_diff = var_gbit - var_cen 
     
     ) # %>% 
   # mutate_if(is.numeric, ~ round(.x, 3))
 
+min(bias_dt$var_cen, na.rm = T)
+max(bias_dt$var_cen, na.rm = T)
+
+min(bias_dt$var_gbit, na.rm = T)
+max(bias_dt$var_gbit, na.rm = T)
+
+bias_dt %>% 
+  arrange(-var_cen)
 # -------------------------------------------------------------------------
 filter.inp = "I~1"
 filter.inp = "S~1"
