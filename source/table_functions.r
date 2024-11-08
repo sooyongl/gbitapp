@@ -37,8 +37,8 @@ table.phase2 <- function(ft_data, caption="", x.width = 1) {
     mutate_if(is.numeric, round, 3) %>% 
     select(type, nobs,
            starts_with("rbias"), 
-           starts_with("var")) %>% 
-    select(-matches("var_cen|var_gbit")) %>% 
+           starts_with("sd")) %>% 
+    select(-matches("sd_cen|sd_gbit")) %>% 
     select(type, nobs,
            # matches("^bias"),
            # matches("^mse_"),
@@ -66,7 +66,7 @@ table.phase2 <- function(ft_data, caption="", x.width = 1) {
   header2[1:2] <- c("")
   header2[3:dim(ft_data)[2]] <- 
     # rep(c(rep(c("Bias","MSE"), each = 2),"MSER"), 5)
-    rep(c(rep(c("rBias"), each = 2),"VarD"), 5)
+    rep(c(rep(c("rBias"), each = 2),"sdD"), 5)
   # length(header2)
   
   # Header 3
@@ -84,9 +84,9 @@ table.phase2 <- function(ft_data, caption="", x.width = 1) {
     header3 = header3,
     stringsAsFactors = FALSE )
   
-  mser_pos <- str_which(names(ft_data), "var_diff")
+  mser_pos <- str_which(names(ft_data), "sd_diff")
   temp_dt  <- ft_data %>% 
-    select(contains("var_diff"))
+    select(contains("sd_diff"))
   
   coloring <- function(x, coln, temp_dt, mser_pos) {
     bg(x,

@@ -7,7 +7,7 @@ source_codes <- ls()
 cond_table0 <- readRDS("results/cond_table0.rds")
 
 # cleaning ----------------------------------------------------------------
-simres <- readRDS("results/phase2_simres.rds")
+simres <- readRDS("results/phase2_simres_new.rds")
 
 simres <- simres %>% left_join(cond_table0, by = "cond_num")
 
@@ -41,8 +41,9 @@ bias_dt <- est_data %>%
     rbias_cen = mean(rerror_cen, na.rm = T),
     rbias_gbit = mean(rerror_gbit, na.rm = T),
     
-    var_cen = var(censored, na.rm = T),
-    var_gbit = var(gbit, na.rm = T),
+    sd_cen = sd(censored, na.rm = T),
+    
+    sd_gbit = sd(gbit, na.rm = T),
     
     mse_cen = mean(error_cen^2, na.rm = T),
     mse_gbit = mean(error_gbit^2, na.rm = T)
@@ -51,21 +52,20 @@ bias_dt <- est_data %>%
   mutate(
     
     mse_ratio = mse_gbit / mse_cen,
-    var_ratio = var_gbit / var_cen,
+    sd_ratio = sd_gbit / sd_cen,
     
-    var_diff = var_gbit - var_cen 
+    sd_diff = sd_gbit - sd_cen
     
+    # sd_diff = (sd_diff -mean(sd_diff, na.rm = T)) / sd(sd_diff, na.rm = T)
     ) # %>% 
   # mutate_if(is.numeric, ~ round(.x, 3))
 
-min(bias_dt$var_cen, na.rm = T)
-max(bias_dt$var_cen, na.rm = T)
+min(bias_dt$sd_cen, na.rm = T)
+max(bias_dt$sd_cen, na.rm = T)
 
-min(bias_dt$var_gbit, na.rm = T)
-max(bias_dt$var_gbit, na.rm = T)
+min(bias_dt$sd_gbit, na.rm = T)
+max(bias_dt$sd_gbit, na.rm = T)
 
-bias_dt %>% 
-  arrange(-var_cen)
 # -------------------------------------------------------------------------
 filter.inp = "I~1"
 filter.inp = "S~1"
@@ -87,11 +87,11 @@ pick_res <- function(filter.inp) {
     # filter(cenprop_chr == "0.4-0.6") %>%
     select(nobs, ntimepoint, cenprop_chr, ICC, path,
            starts_with("rbias"), 
-           starts_with("var")) %>% 
+           starts_with("sd")) %>% 
     
     select(nobs, ntimepoint, cenprop_chr, ICC,
            starts_with("rbias"), 
-           starts_with("var")) %>% 
+           starts_with("sd")) %>% 
     group_by(nobs, cenprop_chr) %>%
     summarise(
       
@@ -99,20 +99,20 @@ pick_res <- function(filter.inp) {
       rbias_cen = mean(rbias_cen),
       rbias_gbit = mean(rbias_gbit),
       
-      var_cen = mean(var_cen),
-      var_gbit = mean(var_gbit),
+      sd_cen = mean(sd_cen),
+      sd_gbit = mean(sd_gbit),
       
       
       
       # var_ratio  = mean(var_ratio)
-      var_diff = mean(var_diff)
+      sd_diff = mean(sd_diff)
     ) %>%
     
     pivot_wider(names_from = "cenprop_chr", 
                 values_from = c("rbias_cen", "rbias_gbit", 
-                                "var_cen", "var_gbit", "var_diff")
+                                "sd_cen", "sd_gbit", "sd_diff")
     ) %>%  
-    select(-matches("var_cen|var_gbit")) %>% 
+    select(-matches("sd_cen|sd_gbit")) %>% 
     select(nobs,
            matches("0.05-0.95"),
            matches("0.1-0.9"),
