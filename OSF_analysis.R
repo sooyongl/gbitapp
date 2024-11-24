@@ -35,13 +35,14 @@ yS =~ 0*y1 + 1*y2 + 2*y3 + 3*y4
 yI ~ gen + race
 yS ~ gen + race
 
+yI ~~ yS
+
 income ~ gen + race + yI + yS
 
 gen ~ 1
 race ~ 1
 income ~ 1
 "
-
 cfit <- clavaan::cgrowth(model = model, 
                          data = empdata, 
                          bounds = list(y1 = c(0, 100), 

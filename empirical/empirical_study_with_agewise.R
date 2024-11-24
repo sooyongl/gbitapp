@@ -43,6 +43,9 @@ a2 <- a2 %>%
   filter_all(~ !is.na(.x))
 
 
+a2 %>% 
+  data.table::fwrite("OSF_empirical_data.csv")
+
 cenp <- 100
 # unconditional ---------------------------------------------------
 model = "
