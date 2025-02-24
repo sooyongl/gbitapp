@@ -71,7 +71,7 @@ if(F) {
   
   cond_table <- cond_table0 %>% crossing(., reps = nreps)
   cond_table
-  saveRDS(cond_table0, "results/cond_table0.rds")
+  saveRDS(cond_table0, "simulation/results/cond_table0.rds")
   
   # Population info ---------------------------------------------------------
   library(foreach)

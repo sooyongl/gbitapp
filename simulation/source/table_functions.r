@@ -26,7 +26,7 @@ table_add <- function(x.doc, x.tb, landscape = F) {
 
 # Phase 2 table -------------------------------------------------
 table.phase2 <- function(ft_data, filter.inp = "I~1", caption="", x.width = 1) {
-  # ft_data <-bias_dt
+  # ft_data <-table_cond
   # filter.inp = "I~1"
   # x.width = 1
   # caption = "Table 4-2. Intercept"
