@@ -1,12 +1,12 @@
-for(source.code in list.files("source",full.names = T)) {source(source.code)}
+for(source.code in list.files("simulation/source",full.names = T)) {source(source.code)}
 source_codes <- ls()
 
 # Conditions -------------------------------------------------------
-cond_table0 <- readRDS("results/cond_table0.rds")
+cond_table0 <- readRDS("simulation/results/cond_table0.rds")
 
 # cleaning ----------------------------------------------------------------
 # simres <- readRDS("G:/My Drive/project/00dissert_censored_LGM/code/results/phase2_simres.rds")
-simres <- readRDS("results/phase2_simres.rds")
+simres <- readRDS("simulation/results/phase2_simres_new.rds")
 
 simres <- simres %>% left_join(cond_table0, by = "cond_num")
 
@@ -224,7 +224,7 @@ ggSAVE("phase2_figure_itoz1", phase2_figure_itoz1, 12, 10) # 12 16 or 12 10
 ggSAVE("phase2_figure_stoz1", phase2_figure_stoz1, 12, 10)
 
 
-file_paths <- paste0("results/",figures, ".png")
+file_paths <- paste0("simulation/results/",figures, ".png")
 
 my.doc <- read_docx()
 img_add(my.doc, file_paths[1], 
@@ -277,152 +277,4 @@ for(ppp in file_paths[-1]) {
   # }
 }
 
-print(my.doc, target = "results/phase2_figure.docx")
-# file.show("results/phase2_figure.docx")
-
-
-# ------------------------------------------------------------------------
-# fitted_data <- res_estimates %>% 
-#   filter(
-#     str_detect(path, "~1$")
-#   ) %>% 
-#   group_split(cond_num, reps) %>% 
-#   map_df(., ~ .x %>% expectLinear.phase2) %>% 
-#   filter(
-#     (estimator == "POP" & reps == 1) |
-#       estimator != "POP"
-#   )
-
-
-# fitted_covar <- res_estimates %>% 
-#   filter(
-#     str_detect(path, "\\.cov$")
-#   ) %>% 
-#   # pivot_longer(
-#   #   cols = c(population, censored, gbit),
-#   #   names_to = "estimator", values_to = "values") %>% 
-#   group_split(cond_num, reps) %>% 
-#   map_df(., ~ .x %>% expectLinear.phase2) %>% 
-#   filter(
-#     (estimator == "POP" & reps == 1) |
-#       estimator != "POP"
-#   )
-
-# plotting -----------------------------------------------------------------
-# cenprop.vals <- c("0.05-0.95","0.1-0.9","0.2-0.8","0.3-0.7","0.4-0.6")
-
-# Fit results ----------------------------------------------
-# fit_0.05_0.95<- plotFit.phase2(res_fits, filter.input = cenprop.val)
-
-# assign(paste0("fit_",cenprop.val),
-#        plotFit.phase2(res_fits, filter.input = cenprop.val))
-# filename <- file.path("results", paste0(paste0("fit_",cenprop.val),".png"))
-# ggsave(filename, # 8.5 x 11 inc; 1 margin
-#        width = 6.5,  height = 8,  units = "in")
-
-# cenprop.val <- cenprop.vals[1]
-
-# for(cenprop.val in cenprop.vals){
-#   pp <- plotFit.phase2(res_fits, filter.input = cenprop.val)
-#   ggSAVE(
-#     paste0("phase2_fit_",cenprop.val), pp,
-#     width = 6.5, height = 8
-#   )
-# }
-
-# for(cenprop.val in cenprop.vals) {
-#   pp <- plotEstimates.phase2(res_estimates,"I~~I", cenprop.val)
-#   ggSAVE(
-#     paste0("phase2_est_ii_",cenprop.val), pp,
-#     width = 8.5, height = 8
-#   )
-# }
-# 
-# for(cenprop.val in cenprop.vals) {
-#   pp <- plotEstimates.phase2(res_estimates,"S~~S", cenprop.val)
-#   ggSAVE(
-#     paste0("phase2_est_ss_",cenprop.val), pp,
-#     width = 8.5, height = 8
-#   )
-# }
-# 
-# for(cenprop.val in cenprop.vals) {
-#   pp <- plotEstimates.phase2(res_estimates,"I~~S", cenprop.val)
-#   ggSAVE(
-#     paste0("phase2_est_is_",cenprop.val), pp,
-#     width = 8.5, height = 8
-#   )
-# }
-# 
-# for(cenprop.val in cenprop.vals) {
-#   pp <- plotEstimates.phase2(res_estimates,"I~1", cenprop.val)
-#   ggSAVE(
-#     paste0("phase2_est_i1_",cenprop.val), pp,
-#     width = 8.5, height = 8
-#   )
-# }
-# 
-# for(cenprop.val in cenprop.vals) {
-#   pp <- plotEstimates.phase2(res_estimates,"S~1", cenprop.val)
-#   ggSAVE(
-#     paste0("phase2_est_s1_",cenprop.val), pp,
-#     width = 8.5, height = 8
-#   )
-# }
-# 
-# for(cenprop.val in cenprop.vals) {
-#   pp <- plotEstimates.phase2(res_estimates,"I~x1.cov", cenprop.val)
-#   ggSAVE(
-#     paste0("phase2_est_ix1_",cenprop.val), pp,
-#     width = 8.5, height = 8
-#   )
-# }
-# 
-# for(cenprop.val in cenprop.vals) {
-#   pp <- plotEstimates.phase2(res_estimates,"S~x1.cov", cenprop.val)
-#   ggSAVE(
-#     paste0("phase2_est_sx1_",cenprop.val), pp,
-#     width = 8.5, height = 8
-#   )
-# }
-# 
-# for(cenprop.val in cenprop.vals) {
-#   pp <- plotEstimates.phase2(res_estimates,"z1~I.cov", cenprop.val)
-#   ggSAVE(
-#     paste0("phase2_est_z1i_",cenprop.val), pp,
-#     width = 8.5, height = 8
-#   )
-# }
-# 
-# for(cenprop.val in cenprop.vals) {
-#   # cenprop.val = cenprop.vals[5]
-#   pp <- plotEstimates.phase2(res_estimates,"z1~S.cov", cenprop.val)
-#   ggSAVE(
-#     paste0("phase2_est_z1s_",cenprop.val), pp,
-#     width = 8.5, height = 8
-#   )
-# }
-
-
-# my.doc <- read_docx()
-
-# plot_add(x.doc = my.doc, 
-#          gg = mean_p, 
-#          p.title = paste0("Figure 4.4",". Proportions of model selection for GBIT and MLE of doubly-censored LGM under 0.05-0.95 censored proportion across the conditions"), 
-#          9, 6)
-
-# plot_add(x.doc = my.doc, 
-#          gg = mean_p, 
-#          p.title = paste0("Figure 4.4",". Estimates of Intercept for doubly-censored LGM under 0.05-0.95 censored proportion across the conditions"), 
-#          9, 6)
-
-# my.doc <- body_end_section_landscape(my.doc)
-
-# print(my.doc, target = "results/phase2_figures.docx")
-
-
-# fitted_data %>% 
-#   filter(ntimepoint  == "5") %>%
-#   # filter(nobs  == "200") %>%
-#   filter(cenprop  == cenprop.val) %>%
-#   fittedPlot.phase2()
+print(my.doc, target = "simulation/results/phase2_figure.docx")

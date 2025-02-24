@@ -1,13 +1,13 @@
 library(flextable)
 library(officer)
-for(source.code in list.files("source",full.names = T)) {source(source.code)}
+for(source.code in list.files("simulation/source",full.names = T)) {source(source.code)}
 source_codes <- ls()
 
 # Conditions -------------------------------------------------------
-cond_table0 <- readRDS("results/cond_table0.rds")
+cond_table0 <- readRDS("simulation/results/cond_table0.rds")
 
 # cleaning ----------------------------------------------------------------
-simres <- readRDS("results/phase2_simres_new.rds")
+simres <- readRDS("simulation/results/phase2_simres_new.rds")
 
 simres <- simres %>% left_join(cond_table0, by = "cond_num")
 
@@ -155,9 +155,8 @@ table_add(my.doc, eval(as.name(tables[2])), landscape = T)
 #   table_add(my.doc, i, landscape = T)
 # }
 
-print(my.doc, target = "results/phase2_table.docx")
+print(my.doc, target = "simulation/results/phase2_table.docx")
 
-print(my.doc, target = 'G:\\My Drive\\project\\0sub_GBIT_simulation\\revision\\table_and_figure\\phase2_table.docx')
 
 
 
